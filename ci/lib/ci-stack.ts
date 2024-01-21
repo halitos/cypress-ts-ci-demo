@@ -11,7 +11,7 @@ export class CiStack extends Stack {
       pipelineName: "cypress-ts-pipeline",
       synth: new ShellStep('Syhtn', {
         input: CodePipelineSource.gitHub('halitos/cypress-ts-ci-demo', 'main'),
-        commands: [ 'npm ci', 'npm run cdk synth --quiet'],
+        commands: [ 'npm ci', 'npx cdk synth --quiet'],
         primaryOutputDirectory: '/cdk.out',
       })
     })
