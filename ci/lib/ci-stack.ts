@@ -20,7 +20,7 @@ export class CiStack extends Stack {
     })
 
     pipeline.addStage(new PipelineStage(this, 'E2eStage', {
-      stageName: 'e2e_test'
+      stageName: 'E2eTest'
     }))
 
   }
