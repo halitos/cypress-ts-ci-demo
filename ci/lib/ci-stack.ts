@@ -33,9 +33,7 @@ export class CiStack extends Stack {
         'npm ci && mkdir -p ~/.cache && mv ~/.npm/_cacache ~/.cache/Cypress/npm',
 
         // Cache the ~/.npm directory
-        'mkdir -p ~/.npm && mv ~/.npm/_cacache ~/.npm/Cypress',
-
-        'npm ci',
+        'mkdir -p ~/.npm && [ -d ~/.npm/_cacache ] && mv ~/.npm/_cacache ~/.npm/Cypress || true',
 
         'npm run cypress:run'
       ]
