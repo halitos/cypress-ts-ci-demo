@@ -21,10 +21,10 @@ export class CiStack extends Stack {
 
 
     const e2eStage = pipeline.addStage(new PipelineStage(this, 'E2eStage', {
-      stageName: 'E2eTest'
+      stageName: 'E2eTest',
     }))
 
-    e2eStage.addPre(new CodeBuildStep('e2e-test', {
+    e2eStage.addPre(new ShellStep('e2e-test', {
       commands: [
         // Install Linux dependencies for Cypress
         'apt-get update && apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb',
@@ -39,7 +39,7 @@ export class CiStack extends Stack {
       ]
     }))
 
-    // e2eStage.addPre(new ShellStep('RunCypressTests', {
+    // e2eStage.addPre(new CodeBuildStep('RunCypressTests', {
     //   commands: [
     //     ...
     //   ],
