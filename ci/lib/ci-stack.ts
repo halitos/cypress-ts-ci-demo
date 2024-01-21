@@ -8,14 +8,14 @@ export class CiStack extends Stack {
     super(scope, id, props);
 
 
-    // const baseDirectory = 'ci';
+    const baseDirectory = 'ci';
 
     new CodePipeline(this, 'cypress-ts-pipeline', {
       pipelineName: "cypress-ts-pipeline",
       synth: new ShellStep('Syhtn', {
         input: CodePipelineSource.gitHub('halitos/cypress-ts-ci-demo', 'main'),
-        commands: ['npm ci', 'npm run cdk synth --quiet'],
-        primaryOutputDirectory: `/cdk.out`,
+        commands: [`cd ${baseDirectory}`, 'npm ci', 'npm run cdk synth --quiet'],
+        primaryOutputDirectory: `${baseDirectory}/cdk.out`,
       })
     })
 
