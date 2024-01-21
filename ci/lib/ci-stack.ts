@@ -1,7 +1,7 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { PipelineStage } from './pipeline-stage';
 
 export class CiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -9,7 +9,7 @@ export class CiStack extends Stack {
 
     const baseDirectory = 'ci';
 
-    new CodePipeline(this, 'cypress-ts-pipeline', {
+    const pipeline = new CodePipeline(this, 'cypress-ts-pipeline', {
       pipelineName: "cypress-ts-pipeline",
       selfMutation: true,
       synth: new ShellStep('Syhtn', {
@@ -18,6 +18,10 @@ export class CiStack extends Stack {
         primaryOutputDirectory: `${baseDirectory}/cdk.out`,
       })
     })
+
+    pipeline.addStage(new PipelineStage(this, 'E2eStage', {
+      stageName: 'e2e_test'
+    }))
 
   }
 }
