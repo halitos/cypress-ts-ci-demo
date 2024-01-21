@@ -1,5 +1,5 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
+import { CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import { PipelineStage } from './pipeline-stage';
 
@@ -19,9 +19,16 @@ export class CiStack extends Stack {
       })
     })
 
-    pipeline.addStage(new PipelineStage(this, 'E2eStage', {
-      stageName: 'E2eTest'
+
+    const e2eStage = pipeline.addStage(new PipelineStage(this, 'E2eStage', {
+      stageName: 'E2eTest',
     }))
 
+    e2eStage.addPre(new CodeBuildStep('e2e-test' , {
+      commands: [
+        'npm ci',
+        'npm run cypress:run'
+      ]
+    }))
   }
 }
