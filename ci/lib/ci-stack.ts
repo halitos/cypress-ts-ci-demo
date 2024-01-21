@@ -9,6 +9,7 @@ export class CiStack extends Stack {
 
     new CodePipeline(this, 'cypress-ts-pipeline', {
       pipelineName: "cypress-ts-pipeline",
+      selfMutation: true,
       synth: new ShellStep('Syhtn', {
         input: CodePipelineSource.gitHub('halitos/cypress-ts-ci-demo', 'main'),
         commands: [ 'npm ci', 'npx cdk synth --quiet'],
