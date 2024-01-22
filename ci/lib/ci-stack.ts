@@ -2,21 +2,25 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import { PipelineStage } from './pipeline-stage';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 export class CiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+
+    const artifactBucket = new Bucket(this, 'ArtifactBucket');
 
     const baseDirectory = 'ci';
 
     const pipeline = new CodePipeline(this, 'cypress-ts-pipeline', {
       pipelineName: "cypress-ts-pipeline",
       selfMutation: true,
+      artifactBucket: artifactBucket,
       synth: new ShellStep('Syhtn', {
         input: CodePipelineSource.gitHub('halitos/cypress-ts-ci-demo', 'main'),
         commands: [`cd ${baseDirectory}`, 'npm ci', 'npx cdk synth --quiet'],
-        primaryOutputDirectory: `${baseDirectory}/cdk.out`
-      })
+        primaryOutputDirectory: `${baseDirectory}/cdk.out`,
+      }),
     })
 
 
