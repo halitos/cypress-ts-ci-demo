@@ -3,6 +3,7 @@ import { CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep } from 'aws-
 import { Construct } from 'constructs';
 import { PipelineStage } from './pipeline-stage';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { CodeBuildAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 
 export class CiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -26,6 +27,7 @@ export class CiStack extends Stack {
 
     const e2eStage = pipeline.addStage(new PipelineStage(this, 'E2eStage', {
       stageName: 'E2eTest',
+      outdir: 'out/results/** '   
     }))
 
     e2eStage.addPre(new ShellStep('e2e-test', {
@@ -39,11 +41,12 @@ export class CiStack extends Stack {
         // Cache the ~/.npm directory
         'mkdir -p ~/.npm && [ -d ~/.npm/_cacache ] && mv ~/.npm/_cacache ~/.npm/Cypress || true',
 
-        'npm run cypress:run'
+        'npm run cypress:run',
+        'npx cypress run --record --browser firefox'
       ]
     }))
 
-    // e2eStage.addPre(new CodeBuildStep('RunCypressTests', {
+    // e2eStage.addPre(new CodeBuildStep('StoreTestResults', {
     //   commands: [
     //     ...
     //   ],
