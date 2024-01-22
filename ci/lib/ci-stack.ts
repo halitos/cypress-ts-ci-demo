@@ -27,7 +27,6 @@ export class CiStack extends Stack {
 
     const e2eStage = pipeline.addStage(new PipelineStage(this, 'E2eStage', {
       stageName: 'E2eTest',
-      outdir: 'out/results/** '   
     }))
 
     e2eStage.addPre(new ShellStep('e2e-test', {
