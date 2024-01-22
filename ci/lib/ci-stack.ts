@@ -41,7 +41,6 @@ export class CiStack extends Stack {
         'mkdir -p ~/.npm && [ -d ~/.npm/_cacache ] && mv ~/.npm/_cacache ~/.npm/Cypress || true',
 
         'npm run cypress:run',
-        'npx cypress run --record --browser firefox'
       ]
     }))
 
