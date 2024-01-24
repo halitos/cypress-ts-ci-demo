@@ -1,5 +1,10 @@
 describe('template spec', () => {
-  it('passes', () => {
+  it('Contains "Kitchen Sink"', () => {
     cy.visit('https://example.cypress.io')
+
+    // verify that the h1 element contains the expected string
+    const title = 'Kitchen Stink'
+    const titleElement = cy.get('h1').first()
+    titleElement.should('include.text', title)
   })
 })
